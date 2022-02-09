@@ -20,7 +20,7 @@ public class ShooterPlayer : MonoBehaviour
         }
     }
 
-    public float moveSpeed = 10f; // per second
+    public float moveSpeed = 5f; // per second
     public float attackCooldown = 1f;
     public float parryWarmup = 1f;
     public Projectile projectilePrefab;
@@ -87,10 +87,10 @@ public class ShooterPlayer : MonoBehaviour
         prepareShield.duration = 0.4f;
         prepareShield.onEnter = () => {
             GetComponent<SpriteRenderer>().color = Color.green;
-            moveSpeed = 4f;
+            moveSpeed = 2f;
         };
         prepareShield.onExit = () => {
-            moveSpeed = 10f;
+            moveSpeed = 5f;
             GetComponent<SpriteRenderer>().color = Color.white;
         };
         shield = new Phase();
@@ -123,7 +123,7 @@ public class ShooterPlayer : MonoBehaviour
         shield.onExit = () => {
             invulnerable = false;
             parryVisuals.SetActive(false);
-            moveSpeed = 10f;
+            moveSpeed = 5f;
             AddPhase(prepareShield);
         };
 
@@ -131,6 +131,7 @@ public class ShooterPlayer : MonoBehaviour
         dodge = new Phase();
         dodge.duration = 0.3f;
         dodge.onEnter = () => {
+            moveSpeed = 7f;
             invulnerable = true;
             parryVisuals.SetActive(true);
         };
@@ -145,10 +146,10 @@ public class ShooterPlayer : MonoBehaviour
         cooldownDodge.duration = 0.4f;
         cooldownDodge.onEnter = () => {
             GetComponent<SpriteRenderer>().color = Color.green;
-            moveSpeed = 4f;
+            moveSpeed = 2f;
         };
         cooldownDodge.onExit = () => {
-            moveSpeed = 10f;
+            moveSpeed = 5f;
             GetComponent<SpriteRenderer>().color = Color.white;
         };
 

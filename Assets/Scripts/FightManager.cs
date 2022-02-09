@@ -6,6 +6,7 @@ public class FightManager : MonoBehaviour
 {
     public static FightManager instance = null;
     public ShooterPlayer shooterPlayer;
+    public BossyEnemy currentBoss;
     public GameObject explosionPrefab;
     public string enemyFlag = "enemy";
     public string allyFlag = "ally";
