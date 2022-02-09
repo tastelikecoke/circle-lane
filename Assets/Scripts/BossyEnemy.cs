@@ -12,6 +12,8 @@ public class BossyEnemy : MonoBehaviour
     public Transform marker1;
     public Transform marker2;
     public Transform markerCenter;
+    public LaserSegment laserSegment;
+    public LineVisuals lineVisuals;
 
     private float remainingAttackCooldown = 0f;
     private float remainingPhaseTime = 0f;
@@ -35,6 +37,8 @@ public class BossyEnemy : MonoBehaviour
     private Phase spreadAttack2;
     private Phase prepareSpreadAttack3;
     private Phase spreadAttack3;
+    private Phase prepareLaser;
+    private Phase laser;
 
     private Vector3 storedAim;
     private Vector3 storedOrigin;
@@ -272,7 +276,7 @@ public class BossyEnemy : MonoBehaviour
         };
         /* Spread Attack */
         prepareSpreadAttack2 = new Phase();
-        prepareSpreadAttack2.duration = 3f;
+        prepareSpreadAttack2.duration = 2f;
         prepareSpreadAttack2.onEnter = () => {
             GetComponent<SpriteRenderer>().color = Color.blue;
         };
@@ -302,6 +306,45 @@ public class BossyEnemy : MonoBehaviour
             bullet3.direction =  Quaternion.Euler(0,0,15) * bullet3.direction;
 
         };
+        spreadAttack2.onExit = () => {
+            if(phases.Contains(moveToMarker1))
+            {
+                phases.Remove(moveToMarker1);
+            }
+            if(phases.Contains(moveToMarker2))
+            {
+                phases.Remove(moveToMarker2);
+            }
+            AddPhase(prepareLaser);
+        };
+        /* Laser Attack */
+        prepareLaser = new Phase();
+        prepareLaser.duration = 1f;
+        prepareLaser.onEnter = () => {
+            GetComponent<SpriteRenderer>().color = Color.cyan;
+            Vector3 playerDirection = GetDirectionTo(FightManager.instance.shooterPlayer.transform);
+            storedAim = FightManager.instance.shooterPlayer.transform.position + (playerDirection * 15f);
+            LineVisuals newLine = Instantiate(lineVisuals);
+            newLine.Populate(this.transform.position, storedAim, 1.2f);
+        };
+        prepareLaser.onExit = () => {
+            GetComponent<SpriteRenderer>().color = Color.white;
+            AddPhase(laser);
+            AddPhase(moveToMarker1);
+        };
+
+        laser = new Phase();
+        laser.duration = 1.5f;
+        laser.onEnter = () => {
+            LaserSegment newSegment = Instantiate(laserSegment);
+            newSegment.gameObject.SetActive(true);
+            newSegment.transform.position = this.transform.position;
+            newSegment.Populate(storedAim, 2.1f, 0.017f, FightManager.instance.enemyFlag);
+        };
+        laser.onExit = () => {
+            AddPhase(prepareSpreadAttack3);
+        };
+
         spreadAttack3 = spreadAttack2.MakeClone();
         prepareSpreadAttack3 = prepareSpreadAttack2.MakeClone();
         prepareSpreadAttack3.onExit = () => {
@@ -309,9 +352,6 @@ public class BossyEnemy : MonoBehaviour
             spreadAttack3.repeat = 4;
             storedAim = GetDirectionTo(FightManager.instance.shooterPlayer.transform);
             AddPhase(spreadAttack3);
-        };
-        spreadAttack2.onExit = () => {
-            AddPhase(prepareSpreadAttack3);
         };
         spreadAttack3.onExit = () => {
             if(phases.Contains(moveToMarker1))
@@ -324,7 +364,10 @@ public class BossyEnemy : MonoBehaviour
             }
             AddPhase(moveToMarkerCenter);
         };
+    }
 
+    void Start()
+    {
         InitStage();
     }
 

@@ -16,16 +16,14 @@ public class Display : MonoBehaviour
         if(FightManager.instance.shooterPlayer != null)
         {
             float lifeValue = FightManager.instance.shooterPlayer.GetLife();
-            Vector2 healthSize = healthMax.GetComponent<RectTransform>().sizeDelta;
-            healthSize.x *= lifeValue / 100f;
-            health.GetComponent<RectTransform>().sizeDelta = healthSize;
+            float healthRectWidth = healthMax.GetComponent<RectTransform>().rect.width * lifeValue / 100f;
+            health.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthRectWidth);
         }
         if(FightManager.instance.currentBoss != null)
         {
             float lifeValue = FightManager.instance.currentBoss.GetLife();
-            Vector2 healthSize = bossHealthMax.GetComponent<RectTransform>().sizeDelta;
-            healthSize.x *= lifeValue / FightManager.instance.currentBoss.lifeMax;
-            bossHealth.GetComponent<RectTransform>().sizeDelta = healthSize;
+            float healthRectWidth = bossHealthMax.GetComponent<RectTransform>().rect.width * lifeValue / FightManager.instance.currentBoss.lifeMax;
+            bossHealth.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthRectWidth);
         }
     }
 }

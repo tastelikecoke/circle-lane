@@ -247,8 +247,21 @@ public class ShooterPlayer : MonoBehaviour
             if(collider.gameObject.GetComponent<Projectile>().flag == FightManager.instance.enemyFlag)
             {
                 life -= 40f;
-                Debug.Log(life);
                 collider.gameObject.GetComponent<Projectile>().Explode();
+                GameObject explosionPrefab = FightManager.instance.explosionPrefab;
+                GameObject explosionInstance = Instantiate(explosionPrefab);
+                explosionInstance.transform.position = this.transform.position;
+                damageTime = 0.3f;
+                damaged.repeat = 2;
+                AddPhase(damaged);
+            }
+        }
+        if(collider.gameObject.GetComponent<LaserSegment>() != null)
+        {
+            if(collider.gameObject.GetComponent<LaserSegment>().flag == FightManager.instance.enemyFlag)
+            {
+                life -= 40f;
+                // collider.gameObject.GetComponent<LaserSegment>().Explode();
                 GameObject explosionPrefab = FightManager.instance.explosionPrefab;
                 GameObject explosionInstance = Instantiate(explosionPrefab);
                 explosionInstance.transform.position = this.transform.position;
