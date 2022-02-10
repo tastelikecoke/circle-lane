@@ -34,6 +34,7 @@ public class ShooterPlayer : MonoBehaviour
     private float staminaMax = 100f;
     private float stamina = 100f;
     private bool invulnerable = false;
+    private bool dead = false;
     public Vector3 direction;
 
     private List<Phase> phases;
@@ -177,6 +178,10 @@ public class ShooterPlayer : MonoBehaviour
     }
     void Update()
     {
+        if(dead)
+        {
+            return;
+        }
         if(moveSpeed != 0f)
         {
             float movementX = (Input.GetKey(KeyCode.LeftArrow)? -1f : 0f) + (Input.GetKey(KeyCode.RightArrow)? 1f : 0f);
@@ -190,18 +195,20 @@ public class ShooterPlayer : MonoBehaviour
 
         if(Input.GetKey(KeyCode.A))
         {
-            if(!phases.Contains(attack) && !phases.Contains(prepareAttack))
+            if(phases.Contains(dodge) || phases.Contains(cooldownDodge)) {}
+            else if(!phases.Contains(attack) && !phases.Contains(prepareAttack))
                 AddPhase(prepareAttack);
         }
         if(Input.GetKey(KeyCode.S))
         {
-            if(!phases.Contains(shield) && !phases.Contains(prepareShield))
-                AddPhase(shield);
-        }
-        if(Input.GetKey(KeyCode.D))
-        {
-            if(!phases.Contains(dodge) && !phases.Contains(cooldownDodge))
+            if(phases.Contains(prepareAttack)) {}
+            else if(!phases.Contains(dodge) && !phases.Contains(cooldownDodge))
                 AddPhase(dodge);
+            /*
+            if(phases.Contains(attack) || phases.Contains(prepareAttack)) {}
+            else if(!phases.Contains(shield) && !phases.Contains(prepareShield))
+                AddPhase(shield);
+            */
         }
         // if(damageTime > 0f)
         // {
@@ -269,6 +276,12 @@ public class ShooterPlayer : MonoBehaviour
                 damaged.repeat = 2;
                 AddPhase(damaged);
             }
+        }
+        if(life <= 0f)
+        {
+            this.dead = true;
+            this.moveSpeed = 0;
+            this.transform.position = new Vector3(-1000, 0, 0);
         }
     }
 

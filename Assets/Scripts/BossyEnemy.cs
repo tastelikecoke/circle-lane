@@ -9,6 +9,7 @@ public class BossyEnemy : MonoBehaviour
     public float attackCooldown = 1f;
     public Projectile projectilePrefab;
     public Projectile threeBulletPrefab;
+    public Projectile sluggishPrefab;
     public Transform marker1;
     public Transform marker2;
     public Transform markerCenter;
@@ -18,10 +19,12 @@ public class BossyEnemy : MonoBehaviour
     private float remainingAttackCooldown = 0f;
     private float remainingPhaseTime = 0f;
     private float life = 300f;
+    private int bigRepeat = 0;
     public float lifeMax = 300f;
     public int stage = 1;
 
     private List<Phase> phases;
+    private Phase prepare;
     private Phase prepareSpreadAttack;
     private Phase spreadAttack;
     private Phase prepareFastBullets;
@@ -39,8 +42,18 @@ public class BossyEnemy : MonoBehaviour
     private Phase spreadAttack3;
     private Phase prepareLaser;
     private Phase laser;
+    private Phase prepareCurtain;
+    private Phase curtain;
+    private Phase prepareLaser2;
+    private Phase laser2;
+    private Phase prepareFastAttack;
+    private Phase fastAttack;
 
+    /* stored aim should be in phases themselves? unless bolt */
     private Vector3 storedAim;
+    private Vector3 storedAimPosition;
+
+    /* movement parameters, don't use for aiming */
     private Vector3 storedOrigin;
     private Vector3 storedTarget;
     private List<Projectile> preparedProjectiles;
@@ -107,6 +120,17 @@ public class BossyEnemy : MonoBehaviour
         };
 
         /* Stage 1 Phases */
+        prepare = new Phase();
+        prepare.duration = 3.0f;
+        prepare.onEnter = () => {
+            if(Random.Range(0,2) == 1)
+                AddPhase(moveToMarker1);
+            else
+                AddPhase(moveToMarker2);
+        };
+        prepare.onExit = () => {
+            AddPhase(prepareSpreadAttack);
+        };
         /* Spread Attack */
         prepareSpreadAttack = new Phase();
         prepareSpreadAttack.duration = 1.2f;
@@ -220,7 +244,10 @@ public class BossyEnemy : MonoBehaviour
         };
         closeFight.onExit = () => {
             AddPhase(prepareSpreadAttack);
-            AddPhase(moveToMarker2);
+            if(Random.Range(0,2) == 1)
+                AddPhase(moveToMarker1);
+            else
+                AddPhase(moveToMarker2);
         };
         
         /* Stage 2 Phases */
@@ -232,7 +259,7 @@ public class BossyEnemy : MonoBehaviour
         };
         moveToMarkerCenter.onUpdate = () => {
             Vector3 inputDirection = (storedTarget - this.transform.position).normalized;
-            this.transform.position += inputDirection * 7f * Time.deltaTime;
+            this.transform.position += inputDirection * 9f * Time.deltaTime;
             if((storedTarget - this.transform.position).magnitude < 0.5f)
             {
                 moveToMarkerCenter.remainingTime = 0f;
@@ -271,12 +298,15 @@ public class BossyEnemy : MonoBehaviour
             }
         };
         closeBlast.onExit = () => {
-            AddPhase(moveToMarker2);
+            if(Random.Range(0,2) == 1)
+                AddPhase(moveToMarker1);
+            else
+                AddPhase(moveToMarker2);
             AddPhase(prepareSpreadAttack2);
         };
         /* Spread Attack */
         prepareSpreadAttack2 = new Phase();
-        prepareSpreadAttack2.duration = 2f;
+        prepareSpreadAttack2.duration = 1.5f;
         prepareSpreadAttack2.onEnter = () => {
             GetComponent<SpriteRenderer>().color = Color.blue;
         };
@@ -319,7 +349,7 @@ public class BossyEnemy : MonoBehaviour
         };
         /* Laser Attack */
         prepareLaser = new Phase();
-        prepareLaser.duration = 1f;
+        prepareLaser.duration = 0.7f;
         prepareLaser.onEnter = () => {
             GetComponent<SpriteRenderer>().color = Color.cyan;
             Vector3 playerDirection = GetDirectionTo(FightManager.instance.shooterPlayer.transform);
@@ -330,7 +360,10 @@ public class BossyEnemy : MonoBehaviour
         prepareLaser.onExit = () => {
             GetComponent<SpriteRenderer>().color = Color.white;
             AddPhase(laser);
-            AddPhase(moveToMarker1);
+            if(Random.Range(0,2) == 1)
+                AddPhase(moveToMarker1);
+            else
+                AddPhase(moveToMarker2);
         };
 
         laser = new Phase();
@@ -364,6 +397,158 @@ public class BossyEnemy : MonoBehaviour
             }
             AddPhase(moveToMarkerCenter);
         };
+
+        /* Stage 3 Phases */
+
+        prepareCurtain = new Phase();
+        prepareCurtain.duration = 0.5f;
+        prepareCurtain.onEnter = () => {
+            GetComponent<SpriteRenderer>().color = Color.blue;
+        };
+        prepareCurtain.onExit = () => {
+            GetComponent<SpriteRenderer>().color = Color.white;
+            curtain.repeat = 8;
+            AddPhase(curtain);
+        };
+        curtain = new Phase();
+        curtain.duration = 0.26f;
+        curtain.onEnter = () => {
+            Projectile makeProjectile(float angleOffset)
+            {
+                Projectile newBullet = Instantiate(sluggishPrefab);
+                newBullet.gameObject.SetActive(true);
+                newBullet.flag = FightManager.instance.enemyFlag;
+                newBullet.direction = GetDirectionTo(FightManager.instance.shooterPlayer.transform);
+                newBullet.direction =  Quaternion.Euler(0,0,angleOffset) * newBullet.direction;
+                newBullet.transform.position = this.transform.position - (newBullet.direction * 0.2f);
+                return newBullet;
+            };
+            float angleShift = 360f / 12f / 2f * curtain.repeat;
+            for(int i = 0; i < 12; i++)
+            {
+                float currentAngle = i * (360f / 12);
+                makeProjectile(currentAngle + angleShift);
+            }
+        };
+        curtain.onExit = () => {
+            if(lifeMax/2f > life)
+            {
+                bigRepeat = 2;
+                AddPhase(prepareFastAttack);
+            }
+            else
+            {
+                if(phases.Contains(moveToMarker1))
+                {
+                    phases.Remove(moveToMarker1);
+                }
+                if(phases.Contains(moveToMarker2))
+                {
+                    phases.Remove(moveToMarker2);
+                }
+                AddPhase(prepareLaser2);
+            }
+        };
+
+        
+        prepareLaser2 = new Phase();
+        prepareLaser2.duration = 0.6f;
+        prepareLaser2.onEnter = () => {
+            GetComponent<SpriteRenderer>().color = Color.cyan;
+            storedAim = FightManager.instance.shooterPlayer.transform.position;// + (playerDirection * 15f);
+            for(float i = -1f; i < 1.5f; i+=1f)
+            {
+                Vector3 bossDisplacement = (this.transform.position - storedAim);
+                bossDisplacement = Quaternion.Euler(0,0,10 * i) * bossDisplacement;
+                Vector3 overshootAim = storedAim + (bossDisplacement.normalized * -15f);
+                LineVisuals newLine = Instantiate(lineVisuals);
+                newLine.Populate(storedAim + bossDisplacement, overshootAim, 1.2f);
+            }
+        };
+        prepareLaser2.onExit = () => {
+            GetComponent<SpriteRenderer>().color = Color.white;
+            AddPhase(laser2);
+            AddPhase(moveToMarker1);
+        };
+
+        laser2 = new Phase();
+        laser2.duration = 1.5f;
+        laser2.onEnter = () => {
+            for(float i = -1f; i < 1.5f; i+=1f)
+            {
+                Vector3 bossDisplacement = (this.transform.position - storedAim);
+                bossDisplacement = Quaternion.Euler(0,0,10 * i) * bossDisplacement;
+                Vector3 overshootAim = storedAim + (bossDisplacement.normalized * -15f);
+                LaserSegment newSegment = Instantiate(laserSegment);
+                newSegment.gameObject.SetActive(true);
+                newSegment.transform.position = storedAim + bossDisplacement;
+                newSegment.Populate(overshootAim, 2.1f, 0.017f, FightManager.instance.enemyFlag);
+            }
+        };
+        laser2.onExit = () => {
+            if(lifeMax/2f > life)
+            {
+                bigRepeat = 2;
+                AddPhase(prepareFastAttack);
+            }
+            else
+            {
+                AddPhase(prepareCurtain);
+            }
+        };
+
+        
+        /* Fast Bullets */
+        prepareFastAttack = new Phase();
+        prepareFastAttack.duration = 0.8f;
+        prepareFastAttack.onEnter = () => {
+            Projectile makeProjectile()
+            {
+                Projectile newBullet = Instantiate(threeBulletPrefab);
+                newBullet.gameObject.SetActive(true);
+                newBullet.flag = FightManager.instance.enemyFlag;
+                newBullet.transform.position = this.transform.position;
+                newBullet.direction = - GetDirectionTo(FightManager.instance.shooterPlayer.transform);
+                newBullet.direction =  Quaternion.Euler(0,0,Random.Range(-5,5)) * newBullet.direction;
+                newBullet.moveSpeed = 1.5f;
+                return newBullet;
+            }
+            preparedProjectiles.Clear();
+            preparedProjectiles.Add(makeProjectile());
+            preparedProjectiles.Add(makeProjectile());
+            preparedProjectiles.Add(makeProjectile());
+
+            GetComponent<SpriteRenderer>().color = Color.red;
+        };
+        prepareFastAttack.onExit = () => {
+            GetComponent<SpriteRenderer>().color = Color.white;
+            fastAttack.repeat = 2;
+            AddPhase(fastAttack);
+        };
+
+        fastAttack = new Phase();
+        fastAttack.duration = 0.10f;
+        fastAttack.repeat = 2;
+        fastAttack.onEnter = () => {
+            if(preparedProjectiles.Count > 0)
+            {
+                preparedProjectiles[0].direction = (FightManager.instance.shooterPlayer.transform.position - preparedProjectiles[0].transform.position).normalized;
+                preparedProjectiles[0].moveSpeed = 50f;
+                preparedProjectiles.RemoveAt(0);
+            }
+        };
+        fastAttack.onExit = () => {
+            if(bigRepeat > 0)
+            {
+                bigRepeat -= 1;
+                AddPhase(prepareFastAttack);
+            }
+            else
+            {
+                AddPhase(prepareCurtain);
+            }
+        };
+
     }
 
     void Start()
@@ -377,12 +562,17 @@ public class BossyEnemy : MonoBehaviour
         if(stage == 1)
         {
             /* Initial phases.  Also this is a really shitty data undriven code. */
-            AddPhase(prepareSpreadAttack);
+            AddPhase(prepare);
             AddPhase(moveToMarker1);
         }
         else if(stage == 2)
         {
             AddPhase(prepareSpreadAttack2);
+            AddPhase(moveToMarker1);
+        }
+        else if(stage == 3)
+        {
+            AddPhase(prepareCurtain);
             AddPhase(moveToMarker1);
         }
     }
@@ -453,7 +643,7 @@ public class BossyEnemy : MonoBehaviour
                 collider.gameObject.GetComponent<Projectile>().Explode();
                 if(life <= 0f)
                 {
-                    if(stage >= 2)
+                    if(stage > 2)
                     {
                         Destroy(this.gameObject);
                         // You win

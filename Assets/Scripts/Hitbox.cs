@@ -14,7 +14,6 @@ public class Hitbox : MonoBehaviour
         if(onHitEnter != null)
             onHitEnter(collider);
         collidingObjects.Add(collider);
-        Debug.Log(collidingObjects.Count);
     }
 
     public void Refresh()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FightManager : MonoBehaviour
 {
@@ -13,5 +14,10 @@ public class FightManager : MonoBehaviour
     void Awake()
     {
         FightManager.instance = this;
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("TestScene1");
     }
 }
