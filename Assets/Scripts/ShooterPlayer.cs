@@ -189,8 +189,8 @@ public class ShooterPlayer : MonoBehaviour
             Vector3 inputDirection = new Vector3(movementX, movementY, 0f).normalized * Mathf.Max(Mathf.Abs(movementX), Mathf.Abs(movementY));
             if(inputDirection != Vector3.zero)
                 direction = inputDirection;
-            float computedDistance = moveSpeed * Time.deltaTime;
-            this.transform.position += inputDirection * computedDistance;
+            float computedDistance = moveSpeed;//* Time.deltaTime;
+            this.GetComponent<Rigidbody2D>().velocity = inputDirection * computedDistance;
         }
 
         if(Input.GetKey(KeyCode.A))
@@ -201,9 +201,18 @@ public class ShooterPlayer : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.S))
         {
-            if(phases.Contains(prepareAttack)) {}
-            else if(!phases.Contains(dodge) && !phases.Contains(cooldownDodge))
+            if(!phases.Contains(dodge) && !phases.Contains(cooldownDodge))
+            {
+                if(phases.Contains(prepareAttack))
+                {
+                    phases.Remove(prepareAttack);
+                }
+                if(phases.Contains(attack))
+                {
+                    phases.Remove(attack);
+                }
                 AddPhase(dodge);
+            }
             /*
             if(phases.Contains(attack) || phases.Contains(prepareAttack)) {}
             else if(!phases.Contains(shield) && !phases.Contains(prepareShield))
@@ -288,5 +297,9 @@ public class ShooterPlayer : MonoBehaviour
     public float GetLife()
     {
         return life;
+    }
+    public bool GetDeath()
+    {
+        return dead;
     }
 }

@@ -279,7 +279,7 @@ public class BossyEnemy : MonoBehaviour
             AddPhase(closeBlast);
         };
         closeBlast = new Phase();
-        closeBlast.duration = 0.2f;
+        closeBlast.duration = 0.6f;
         closeBlast.onEnter = () => {
             Projectile makeProjectile(float angleOffset)
             {
@@ -296,17 +296,17 @@ public class BossyEnemy : MonoBehaviour
                 float currentAngle = i * (360f / 24);
                 makeProjectile(currentAngle);
             }
-        };
-        closeBlast.onExit = () => {
             if(Random.Range(0,2) == 1)
                 AddPhase(moveToMarker1);
             else
                 AddPhase(moveToMarker2);
+        };
+        closeBlast.onExit = () => {
             AddPhase(prepareSpreadAttack2);
         };
         /* Spread Attack */
         prepareSpreadAttack2 = new Phase();
-        prepareSpreadAttack2.duration = 1.5f;
+        prepareSpreadAttack2.duration = 1.6f;
         prepareSpreadAttack2.onEnter = () => {
             GetComponent<SpriteRenderer>().color = Color.blue;
         };
@@ -380,6 +380,7 @@ public class BossyEnemy : MonoBehaviour
 
         spreadAttack3 = spreadAttack2.MakeClone();
         prepareSpreadAttack3 = prepareSpreadAttack2.MakeClone();
+        prepareSpreadAttack3.duration = 1.6f;
         prepareSpreadAttack3.onExit = () => {
             GetComponent<SpriteRenderer>().color = Color.white;
             spreadAttack3.repeat = 4;
@@ -500,7 +501,7 @@ public class BossyEnemy : MonoBehaviour
         
         /* Fast Bullets */
         prepareFastAttack = new Phase();
-        prepareFastAttack.duration = 0.8f;
+        prepareFastAttack.duration = 1.6f;
         prepareFastAttack.onEnter = () => {
             Projectile makeProjectile()
             {

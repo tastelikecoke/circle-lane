@@ -10,6 +10,7 @@ public class Display : MonoBehaviour
     public Image health;
     public Image bossHealth;
     public Image bossHealthMax;
+    public GameObject youDiedObject;
 
     void Update()
     {
@@ -24,6 +25,10 @@ public class Display : MonoBehaviour
             float lifeValue = FightManager.instance.currentBoss.GetLife();
             float healthRectWidth = bossHealthMax.GetComponent<RectTransform>().rect.width * lifeValue / FightManager.instance.currentBoss.lifeMax;
             bossHealth.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, healthRectWidth);
+        }
+        if(FightManager.instance.shooterPlayer != null)
+        {
+            youDiedObject.gameObject.SetActive(FightManager.instance.shooterPlayer.GetDeath());
         }
     }
 }
