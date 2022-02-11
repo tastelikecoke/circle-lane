@@ -10,15 +10,22 @@ public class Projectile : MonoBehaviour
     public string flag = "";
     
     private float lifetime = 0f;
+    void Awake()
+    {
+        if(FightManager.instance != null)
+            FightManager.instance.projectiles.Add(this.gameObject);
+    }
     void Update()
     {
         lifetime += Time.deltaTime;
         this.transform.position += direction * moveSpeed * Time.deltaTime;
         if(lifetime > maxLifetime)
-            Destroy(this.gameObject);
+            Explode();
     }
     public void Explode()
     {
+        if(FightManager.instance != null)
+            FightManager.instance.projectiles.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 }

@@ -22,6 +22,7 @@ public class BossyEnemy : MonoBehaviour
     private int bigRepeat = 0;
     public float lifeMax = 300f;
     public int stage = 1;
+    private bool dead = false;
 
     private List<Phase> phases;
     private Phase prepare;
@@ -135,7 +136,7 @@ public class BossyEnemy : MonoBehaviour
         prepareSpreadAttack = new Phase();
         prepareSpreadAttack.duration = 1.2f;
         prepareSpreadAttack.onEnter = () => {
-            GetComponent<SpriteRenderer>().color = Color.blue;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
         };
         prepareSpreadAttack.onExit = () => {
             GetComponent<SpriteRenderer>().color = Color.white;
@@ -308,7 +309,7 @@ public class BossyEnemy : MonoBehaviour
         prepareSpreadAttack2 = new Phase();
         prepareSpreadAttack2.duration = 1.6f;
         prepareSpreadAttack2.onEnter = () => {
-            GetComponent<SpriteRenderer>().color = Color.blue;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
         };
         prepareSpreadAttack2.onExit = () => {
             GetComponent<SpriteRenderer>().color = Color.white;
@@ -404,7 +405,7 @@ public class BossyEnemy : MonoBehaviour
         prepareCurtain = new Phase();
         prepareCurtain.duration = 0.5f;
         prepareCurtain.onEnter = () => {
-            GetComponent<SpriteRenderer>().color = Color.blue;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
         };
         prepareCurtain.onExit = () => {
             GetComponent<SpriteRenderer>().color = Color.white;
@@ -533,9 +534,13 @@ public class BossyEnemy : MonoBehaviour
         fastAttack.onEnter = () => {
             if(preparedProjectiles.Count > 0)
             {
-                preparedProjectiles[0].direction = (FightManager.instance.shooterPlayer.transform.position - preparedProjectiles[0].transform.position).normalized;
-                preparedProjectiles[0].moveSpeed = 50f;
+                if(preparedProjectiles[0] != null)
+                {
+                    preparedProjectiles[0].direction = (FightManager.instance.shooterPlayer.transform.position - preparedProjectiles[0].transform.position).normalized;
+                    preparedProjectiles[0].moveSpeed = 50f;
+                }
                 preparedProjectiles.RemoveAt(0);
+                    
             }
         };
         fastAttack.onExit = () => {
@@ -585,6 +590,8 @@ public class BossyEnemy : MonoBehaviour
     }
     void Update()
     {
+        if(this.dead)
+            return;
         for(int i = 0; i < phases.Count; i++)
         {
             Phase currentPhase = phases[i];
@@ -644,9 +651,12 @@ public class BossyEnemy : MonoBehaviour
                 collider.gameObject.GetComponent<Projectile>().Explode();
                 if(life <= 0f)
                 {
+                    ClearBossBullets();
                     if(stage > 2)
                     {
-                        Destroy(this.gameObject);
+                        this.dead = true;
+                        this.moveSpeed = 0;
+                        this.transform.position = new Vector3(-1000, 0, 0);
                         // You win
                     }
                     else
@@ -660,8 +670,37 @@ public class BossyEnemy : MonoBehaviour
         }
     }
 
+    public void ClearBossBullets()
+    {
+        for(int i=0; i<FightManager.instance.projectiles.Count; i++)
+        {
+            GameObject projectile = FightManager.instance.projectiles[i];
+            if(projectile == null) continue;
+            if(projectile.GetComponent<Projectile>() != null)
+            {
+                if(projectile.GetComponent<Projectile>().flag == FightManager.instance.enemyFlag)
+                {
+                    projectile.GetComponent<Projectile>().Explode();
+                    i--;
+                }
+            }
+            if(projectile.GetComponent<LaserSegment>() != null)
+            {
+                if(projectile.GetComponent<LaserSegment>().flag == FightManager.instance.enemyFlag)
+                {
+                    projectile.GetComponent<LaserSegment>().Explode();
+                    i--;
+                }
+            }
+        }
+    }
+
     public float GetLife()
     {
         return life;
+    }
+    public bool GetDeath()
+    {
+        return dead;
     }
 }

@@ -16,6 +16,8 @@ public class LaserSegment : MonoBehaviour
 
     public void Populate(Vector3 target, float maxLifetime, float nextSegmentTime, string flag)
     {
+        if(FightManager.instance != null)
+            FightManager.instance.projectiles.Add(this.gameObject);
         this.target = target;
         this.nextSegmentTime = nextSegmentTime;
         this.maxLifetime = maxLifetime;
@@ -38,7 +40,7 @@ public class LaserSegment : MonoBehaviour
         lifetime -= Time.deltaTime;
         nextSegmentRemainingTime -= Time.deltaTime;
         if(lifetime < 0f)
-            Destroy(this.gameObject);
+            Explode();
         if(nextSegmentRemainingTime < 0f && !finished)
         {
             LaserSegment newSegment = Instantiate(this);
@@ -53,6 +55,8 @@ public class LaserSegment : MonoBehaviour
     
     public void Explode()
     {
+        if(FightManager.instance != null)
+            FightManager.instance.projectiles.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 }

@@ -11,6 +11,7 @@ public class Display : MonoBehaviour
     public Image bossHealth;
     public Image bossHealthMax;
     public GameObject youDiedObject;
+    public GameObject youWinObject;
 
     void Update()
     {
@@ -29,6 +30,10 @@ public class Display : MonoBehaviour
         if(FightManager.instance.shooterPlayer != null)
         {
             youDiedObject.gameObject.SetActive(FightManager.instance.shooterPlayer.GetDeath());
+        }
+        if(FightManager.instance.currentBoss != null)
+        {
+            youWinObject.gameObject.SetActive(FightManager.instance.currentBoss.GetDeath());
         }
     }
 }
