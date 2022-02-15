@@ -3266,12 +3266,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"remainingTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"storedAim","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"projectilePrefab","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker1","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker2","value":{"$content":2,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"fastBulletPrefab","value":{"$content":3,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"collection":{"$content":[{"name":"remainingTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"storedAim","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"projectilePrefab","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker1","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker2","value":{"$content":2,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"fastBulletPrefab","value":{"$content":3,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"storedProjectiles","value":{"$content":[],"$type":"Ludiq.AotList"},"$version":"A"},{"name":"storedOrigin","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"storedTarget","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"remainingMoveTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"moveMachine","value":{"$content":4,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 2130720265}
     - {fileID: 76269775}
     - {fileID: 1950630969}
     - {fileID: 866984770}
+    - {fileID: 1631808542}
 --- !u!114 &1631808542
 MonoBehaviour:
   m_ObjectHideFlags: 0
