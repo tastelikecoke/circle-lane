@@ -618,6 +618,7 @@ GameObject:
   - component: {fileID: 312781953}
   - component: {fileID: 312781952}
   - component: {fileID: 312781951}
+  - component: {fileID: 312781955}
   - component: {fileID: 312781950}
   m_Layer: 5
   m_Name: Canvas
@@ -625,7 +626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &312781950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,16 +636,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 312781949}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2ef19f6b2220f5418aa4f25b45ce02a, type: 3}
+  m_Script: {fileID: -57143145, guid: a040fb66244a7f54289914d98ea4ef7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifeText: {fileID: 1054871718}
-  healthMax: {fileID: 628713351}
-  health: {fileID: 1400778084}
-  bossHealth: {fileID: 789041987}
-  bossHealthMax: {fileID: 1220194042}
-  youDiedObject: {fileID: 157298222}
-  youWinObject: {fileID: 1566836770}
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: c24c214d5c3006141af965f4e95199c6, type: 2}
 --- !u!114 &312781951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -729,6 +727,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &312781955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312781949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1465209106, guid: c8d0ad23af520fe46aabe2b1fecf6462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"collection":{"$content":[{"name":"healthMax","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"health","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 628713349}
+    - {fileID: 1400778086}
 --- !u!1 &366092904
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,10 +1208,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"shooterPlayer","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"currentBoss","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"collection":{"$content":[{"name":"shooterPlayer","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"currentBoss","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"explosionPrefab","value":{"$content":2,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1730826939}
     - {fileID: 1631808535}
+    - {fileID: 8945140068645476712, guid: 042ac48ac7e40424e910748dce616832, type: 3}
 --- !u!4 &590014834
 Transform:
   m_ObjectHideFlags: 0
@@ -3577,7 +3593,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"moveSpeed","value":{"$content":10.0,"$type":"System.Single"},"$version":"A"},{"name":"remainingTime","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"invulnerable","value":{"$content":false,"$type":"System.Boolean"},"$version":"A"},{"name":"parryVisuals","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"collection":{"$content":[{"name":"moveSpeed","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"remainingTime","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"invulnerable","value":{"$content":false,"$type":"System.Boolean"},"$version":"A"},{"name":"parryVisuals","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"life","value":{"$content":100.0,"$type":"System.Single"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1138136317}
 --- !u!114 &1730826946
