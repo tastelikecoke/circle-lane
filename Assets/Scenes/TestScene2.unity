@@ -740,10 +740,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"healthMax","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"health","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"collection":{"$content":[{"name":"healthMax","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"health","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"youDiedObject","value":{"$content":2,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"bossHealthMax","value":{"$content":3,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"bossHealth","value":{"$content":4,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"youWinObject","value":{"$content":5,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 628713349}
     - {fileID: 1400778086}
+    - {fileID: 157298222}
+    - {fileID: 1220194041}
+    - {fileID: 789041984}
+    - {fileID: 1566836770}
 --- !u!1 &366092904
 GameObject:
   m_ObjectHideFlags: 0
@@ -959,16 +963,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FightManager, Assembly-CSharp
-        m_MethodName: Menu
-        m_Mode: 1
+      - m_Target: {fileID: 312781950}
+        m_TargetAssemblyTypeName: Bolt.EventMachine`2[[Bolt.FlowGraph, Bolt.Flow.Runtime
+        m_MethodName: TriggerUnityEvent
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Menu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &463602313
@@ -1394,7 +1398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &831307391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1455,7 +1459,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &833168617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1886,16 +1890,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FightManager, Assembly-CSharp
-        m_MethodName: Menu
-        m_Mode: 1
+      - m_Target: {fileID: 312781950}
+        m_TargetAssemblyTypeName: Bolt.EventMachine`2[[Bolt.FlowGraph, Bolt.Flow.Runtime
+        m_MethodName: TriggerUnityEvent
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Menu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &987565823
@@ -2257,16 +2261,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: FightManager, Assembly-CSharp
-        m_MethodName: Restart
-        m_Mode: 1
+      - m_Target: {fileID: 312781950}
+        m_TargetAssemblyTypeName: Bolt.EventMachine`2[[Bolt.FlowGraph, Bolt.Flow.Runtime
+        m_MethodName: TriggerUnityEvent
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Restart
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1237202620
@@ -3134,6 +3138,7 @@ GameObject:
   - component: {fileID: 1631808541}
   - component: {fileID: 1631808536}
   - component: {fileID: 1631808542}
+  - component: {fileID: 1631808543}
   m_Layer: 0
   m_Name: Bossy
   m_TagString: Untagged
@@ -3282,7 +3287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"remainingTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"storedAim","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"projectilePrefab","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker1","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker2","value":{"$content":2,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"fastBulletPrefab","value":{"$content":3,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"storedProjectiles","value":{"$content":[],"$type":"Ludiq.AotList"},"$version":"A"},{"name":"storedOrigin","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"storedTarget","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"remainingMoveTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"moveMachine","value":{"$content":4,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"collection":{"$content":[{"name":"remainingTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"storedAim","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"projectilePrefab","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker1","value":{"$content":1,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"marker2","value":{"$content":2,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"fastBulletPrefab","value":{"$content":3,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"storedProjectiles","value":{"$content":[],"$type":"Ludiq.AotList"},"$version":"A"},{"name":"storedOrigin","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"storedTarget","value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"$version":"A"},{"name":"remainingMoveTime","value":{"$content":0.0,"$type":"System.Single"},"$version":"A"},{"name":"moveMachine","value":{"$content":4,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"life","value":{"$content":300.0,"$type":"System.Single"},"$version":"A"},{"name":"dead","value":{"$content":false,"$type":"System.Boolean"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 2130720265}
     - {fileID: 76269775}
@@ -3305,6 +3310,22 @@ MonoBehaviour:
     _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
     _objectReferences:
     - {fileID: 11400000, guid: 3ff6668ac4fa8dc46aa2814e046037cb, type: 2}
+--- !u!114 &1631808543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631808535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -57143145, guid: a040fb66244a7f54289914d98ea4ef7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: 42aa7a8fb372c19448e680442c4d70ff, type: 2}
 --- !u!1 &1717261348
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,7 +3495,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.375
 --- !u!50 &1730826941
 Rigidbody2D:
   serializedVersion: 4
@@ -3593,7 +3614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"collection":{"$content":[{"name":"moveSpeed","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"remainingTime","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"invulnerable","value":{"$content":false,"$type":"System.Boolean"},"$version":"A"},{"name":"parryVisuals","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"life","value":{"$content":100.0,"$type":"System.Single"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _json: '{"declarations":{"collection":{"$content":[{"name":"moveSpeed","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"remainingTime","value":{"$content":5.0,"$type":"System.Single"},"$version":"A"},{"name":"repeat","value":{"$content":0,"$type":"System.Int32"},"$version":"A"},{"name":"invulnerable","value":{"$content":false,"$type":"System.Boolean"},"$version":"A"},{"name":"parryVisuals","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"},{"name":"life","value":{"$content":100.0,"$type":"System.Single"},"$version":"A"},{"name":"dead","value":{"$content":false,"$type":"System.Boolean"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1138136317}
 --- !u!114 &1730826946
